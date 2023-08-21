@@ -1,0 +1,55 @@
+---
+
+- name: "1.6.1 | PATCH | Ensure core dumps are restricted"
+  block:
+      - name: "1.6.1 | PATCH | Ensure core dumps are restricted | Update limits.conf file"
+        lineinfile:
+            state: present
+            dest: /etc/security/limits.conf
+            regexp: '^#?\\*.*core'
+            line: '*                hard    core            0'
+            insertbefore: '^# End of file'
+
+      - name: "1.6.1 | PATCH | Ensure core dumps are restricted | Set active kernel parameter"
+        sysctl:
+            name: fs.suid_dumpable
+            value: '0'
+            state: present
+            reload: true
+            sysctl_set: true
+            ignoreerrors: true
+
+      - name: 1.6.1 | PATCH | Ensure core dumps are restricted | coredump.conf"
+        lineinfile:
+            dest: /etc/systemd/coredump.conf
+            regexp: "{{ item.regex }}"
+            line: "{{ item.line }}"
+            create: true
+            mode: 0644
+        loop:
+            - { regex: '^Storage', line: 'Storage=none' }
+            - { regex: '^ProcessSizeMax', line: 'ProcessSizeMax=0' }
+  when:
+      - rule_1_6_1
+  tags:
+      - level1-server
+      - level1-workstation
+      - sysctl
+      - patch
+      - rule_1.6.1
+
+- name: "1.6.2 | PATCH | Ensure address space layout randomization (ASLR) is enabled"
+  sysctl:
+      name: kernel.randomize_va_space
+      value: '2'
+      state: present
+      reload: true
+      sysctl_set: true
+      ignoreerrors: true
+  when:
+      - rule_1_6_2
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_1.6.2

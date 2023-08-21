@@ -1,0 +1,75 @@
+---
+
+- name: "2.2.1.1 | PATCH | Ensure time synchronization is in use | service install"
+  package:
+      name: "{{ time_synchronization }}"
+      state: present
+  when:
+      - rule_2_2_1_1
+      - not system_is_container
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_2.2.1.1
+  vars:
+      ansible_python_interpreter: /bin/python
+
+- name: "2.2.1.1 | PATCH | Ensure time synchronization is in use | service start"
+  service:
+      name: "{{ time_synchronization }}d"
+      state: started
+      enabled: true
+  when:
+      - rule_2_2_1_1
+      - not system_is_container
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_2.2.1.1
+
+- name: "2.2.1.1 | PATCH | Ensure time synchronization is in use - service stop chrony"
+  service:
+      name: chronyd
+      state: stopped
+      enabled: false
+  when:
+      - time_synchronization == "'chrony' in ansible_facts.packages"
+      - rule_2_2_1_1
+      - not system_is_container
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_2.2.1.1
+
+- name: "2.2.1.2 | PATCH | Ensure chrony is configured"
+  block:
+      - name: "2.2.1.2 | PATCH | Ensure chrony is configured | modify /etc/chrony.conf"
+        template:
+            src: chrony.conf.j2
+            dest: /etc/chrony.conf
+            owner: root
+            group: root
+            mode: 0644
+
+      - name: "2.2.1.2 | PATCH | Ensure chrony is configured | modify /etc/sysconfig/chronyd"
+        lineinfile:
+            dest: /etc/sysconfig/chronyd
+            regexp: "^(#)?OPTIONS"
+            line: "OPTIONS=\"-u chrony\""
+            state: present
+            create: true
+            owner: root
+            group: root
+            mode: 0640
+  when:
+      - time_synchronization == "chrony"
+      - rule_2_2_1_2
+      - not system_is_container
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_2.2.1.2

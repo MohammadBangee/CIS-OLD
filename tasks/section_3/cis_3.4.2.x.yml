@@ -1,0 +1,128 @@
+---
+
+- name: "3.4.1.1 | PATCH | Ensure Firewalld4is installed"
+  package:
+      name: firewalld
+      state: present
+  vars:
+      ansible_python_interpreter: /bin/python
+  when:
+      - "'firewalld' not in ansible_facts.packages"
+      - rule_3_4_1_1
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_3.4.1.1
+
+- name: "3.4.2.1 | PATCH | Ensure firewalld service is enabled and running"
+  systemd:
+      name: firewalld
+      state: started
+      enabled: true
+      masked: false
+  when:
+      - rule_3_4_2_1
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_3.4.2.1
+
+- name: "3.4.2.2 | PATCH | Ensure iptables-services not installed with firewalld"
+  systemd:
+      name: iptables
+      state: stopped
+      enabled: false
+      masked: true
+  vars:
+      ansible_python_interpreter: /bin/python
+  when:
+      - "'iptables-services' in ansible_facts.packages"
+      - rule_3_4_2_2
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_3.4.2.2
+
+- name: "3.4.2.3 | PATCH | Ensure nftable-services not installed with firewalld"
+  systemd:
+      name: nftables
+      state: stopped
+      enabled: false
+      masked: true
+  vars:
+      ansible_python_interpreter: /bin/python
+  when:
+      - "'nftables' in ansible_facts.packages"
+      - rule_3_4_2_3
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_3.4.2.3
+
+
+
+- name: "3.4.2.4 | PATCH | Ensure firewalld default zone is set"
+  block:
+      - name: "3.4.2.4 | AUDIT | Ensure default zone is set"
+        command: firewall-cmd --get-default-zone
+        changed_when: false
+        check_mode: false
+        register: current_default_zone
+
+      - name: "3.4.2.4 | PATCH | Ensure default zone is set"
+        command: firewall-cmd --set-default-zone="{{ default_zone }}"
+        when:
+            - current_default_zone.stdout != default_zone
+  when:
+      - rule_3_4_2_4
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_3.4.2.4
+
+- name: "3.4.2.5 | AUDIT | Ensure network interfaces are assigned to appropriate zone"
+  block:
+      - name: "3.4.2.5 | AUDIT | Ensure network interfaces are assigned to appropriate zone | Get list of interfaces and policies"
+        shell: "nmcli -t connection show | awk -F: '{ if($4){print $4} }' | while read INT; do firewall-cmd --get-active-zones | grep -B1 $INT; done"
+        changed_when: false
+        check_mode: false
+        register: 3_4_2_5_interfacepolicy
+
+      - name: "3.4.2.5 | AUDIT | Ensure network interfaces are assigned to appropriate zone | Get list of interfaces and policies | Show the interface to policy"
+        debug:
+            msg:
+                - "The items below are the policies tied to the interfaces, please correct as needed"
+                - "{{ 3_4_2_5_interfacepolicy.stdout_lines }}"
+  when:
+      - rule_3_4_2_5
+  tags:
+      - level1-server
+      - level1-workstation
+      - audit
+      - rule_3.4.2.5
+
+- name: "3.4.2.6 | AUDIT | Ensure firewalld drops unnecessary services and ports"
+  block:
+      - name: "3.4.2.6 | AUDIT | Ensure firewalld drops unnecessary services and ports | Get list of services and ports"
+        shell: "firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do firewall-cmd --list-all --zone=$ZN; done"
+        changed_when: false
+        check_mode: false
+        register: 3_4_2_6_servicesport
+
+      - name: "3.4.2.6 | AUDIT | Ensure firewalld drops unnecessary services and ports | Show services and ports"
+        debug:
+            msg:
+                - "The items below are the services and ports that are accepted, please correct as needed"
+                - "{{ 3_4_2_6_servicesport.stdout_lines }}"
+  when:
+      - rule_3_4_2_6
+  tags:
+      - level1-server
+      - level1-workstation
+      - audit
+      - rule_3.4.2.6

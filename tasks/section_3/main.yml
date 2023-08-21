@@ -1,0 +1,45 @@
+---
+
+- name: "SECTION | 3.1 | Network Parameters (Host Only)"
+  import_tasks: cis_3.1.x.yml
+
+- name: "SECTION | 3.2 | Network Parameters (Host and Router)"
+  import_tasks: cis_3.2.x.yml
+
+- name: "SECTION | 3.3 | Uncommon Network Protocols"
+  import_tasks: cis_3.3.x.yml
+
+- name: "SECTION | 3.4.1-2 | Configure firewalld"
+  import_tasks: cis_3.4.2.x.yml
+  when:
+      - firewall == "firewalld"
+  tags:
+      - firewalld
+
+- name: "SECTION | 3.4.3 | Configure nftables"
+  import_tasks: cis_3.4.3.x.yml
+  when:
+      - firewall == "nftables"
+  tags:
+      - nftables
+
+- name: "SECTION | 3.4.4.x.x | Configure iptables"
+  block:
+      - name: "SECTION | 3.4.4.1.x | Configure iptables"
+        import_tasks: cis_3.4.4.1.x.yml
+  when:
+      - firewall == "iptables"
+  tags:
+      - iptables
+
+- name: "SECTION | 3.4.4.2.x | Configure ip6tables"
+  import_tasks: cis_3.4.4.2.x.yml
+  when:
+      - not ipv6_required
+      - firewall == "iptables"
+  tags:
+      - iptables
+      - ip6tables
+
+- name: "SECTION | 3.5-6 | Disable unused network protocols and devices"
+  import_tasks: cis_3.5-6.yml

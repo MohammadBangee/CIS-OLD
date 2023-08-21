@@ -1,0 +1,73 @@
+---
+
+- name: "1.5.1 | PATCH | Ensure permissions on bootloader config are configured | UEFI"
+        mount:
+            name: /boot/efi
+            src: "UUID={{ item.uuid }}"
+            fstype: vfat
+            state: present
+            opts: defaults,umask=0027,fmask=0077,uid=0,gid=0
+            passno: '0'
+        loop: "{{ ansible_mounts }}"
+        loop_control:
+            label: "{{ item.mount }}"
+        when:
+            - not legacy_boot
+            - item.mount == "/boot/efi"
+  when:
+      - rule_1_5_1
+  tags:
+      - level1-server
+      - level1-workstation
+      - grub
+      - patch
+      - rule_1.5.1
+
+- name: "1.5.2 | PATCH | Ensure bootloader password is set"
+  block:
+      - name: "1.5.2 | PATCH | Ensure bootloader password is set"
+        copy:
+            dest: "{{ bootloader_path }}user.cfg"  # noqa template-instead-of-copy
+            content: "GRUB2_PASSWORD={{ bootloader_password_hash }}"
+            owner: root
+            group: root
+            mode: "{% if legacy_boot %}0600{% else %}0700{% endif %}"
+        register: bootloader_pw
+        notify: grub2cfg
+
+      - name: "1.5.2 | FACT | Ensure bootloader password is set"
+        set_fact:
+            change_requires_reboot: true
+        when: bootloader_pw
+  when:
+      - ansible_distribution_version >= '7.2'
+      - set_boot_pass
+      - rule_1_5_1
+  tags:
+      - level1-server
+      - level1-workstation
+      - grub
+      - patch
+      - rule_1.5.2
+
+- name: "1.5.3 | PATCH | Ensure authentication required for single user mode"
+  block:
+      - name: "1.5.3 | PATCH | Ensure authentication required for single user mode | Emergency service"
+        lineinfile:
+            dest: /usr/lib/systemd/system/emergency.service
+            regexp: '/sbin/sulogin'
+            line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
+
+      - name: "1.5.3 | PATCH | Ensure authentication required for single user mode | Rescue service"
+        lineinfile:
+            dest: /usr/lib/systemd/system/rescue.service
+            regexp: '/sbin/sulogin'
+            line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
+  when:
+      - rule_1_5_3
+      - ansible_distribution_major_version == '8'
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_1.5.3

@@ -1,0 +1,144 @@
+---
+
+- name: "3.4.4.2.1 | PATCH | Ensure ip6tables default deny firewall policy"
+  block:
+      - name: "3.4.4.2.1 | PATCH | Ensure ip6tables default deny firewall policy | Configure SSH to be allowed in"
+        iptables:
+            chain: INPUT
+            protocol: tcp
+            destination_port: 22
+            jump: ACCEPT
+            ctstate: 'NEW,ESTABLISHED'
+            ip_version: ipv6
+
+      - name: "3.4.4.2.1 | PATCH | Ensure ip6tables default deny firewall policy | Configure SSH to be allowed out"
+        iptables:
+            chain: OUTPUT
+            protocol: tcp
+            source_port: 22
+            jump: ACCEPT
+            ctstate: 'NEW,ESTABLISHED'
+            ip_version: ipv6
+
+      - name: "3.4.4.2.1 | PATCH | Ensure ip6tables default deny firewall policy | Enable apt traffic"
+        iptables:
+            chain: INPUT
+            ctstate: 'ESTABLISHED'
+            jump: ACCEPT
+            ip_version: ipv6
+
+      - name: "3.4.4.2.1 | PATCH | Ensure ip6tables default deny firewall policy | Set drop items"
+        iptables:
+            policy: DROP
+            chain: "{{ item }}"
+            ip_version: ipv6
+        with_items:
+            - INPUT
+            - FORWARD
+            - OUTPUT
+  when:
+      - rule_3_4_4_2_1
+      - not system_is_ec2
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_3.4.4.2.1
+      - iptables
+      - ip6tables
+
+- name: "3.4.4.2.2 | PATCH | Ensure ip6tables loopback traffic is configured"
+  block:
+      - name: "3.4.4.2.2 | PATCH | Ensure ip6tables loopback traffic is configured | INPUT loopback ACCEPT"
+        iptables:
+            action: append
+            chain: INPUT
+            in_interface: lo
+            jump: ACCEPT
+            ip_version: ipv6
+
+      - name: "3.4.4.2.2 | PATCH | Ensure ip6tables loopback traffic is configured | OUTPUT loopback ACCEPT"
+        iptables:
+            action: append
+            chain: OUTPUT
+            out_interface: lo
+            jump: ACCEPT
+            ip_version: ipv6
+
+      - name: "3.4.4.2.2 | PATCH | Ensure ip6tables loopback traffic is configured | OUTPUT loopback ACCEPT"
+        iptables:
+            action: append
+            chain: INPUT
+            source: ::1
+            jump: DROP
+            ip_version: ipv6
+  when:
+      - rule_3_4_4_2_2
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_3.4.4.2.2
+      - iptables
+      - ip6tables
+
+- name: "3.4.4.2.3 | PATCH | Ensure ip6tables outbound and established connections are configured"
+  iptables:
+      action: append
+      chain: '{{ item.chain }}'
+      protocol: '{{ item.protocol }}'
+      match: state
+      ctstate: '{{ item.ctstate }}'
+      jump: ACCEPT
+      ip_version: ipv6
+  with_items:
+      - { chain: OUTPUT, protocol: tcp, ctstate: 'NEW,ESTABLISHED' }
+      - { chain: OUTPUT, protocol: udp, ctstate: 'NEW,ESTABLISHED' }
+      - { chain: OUTPUT, protocol: icmp, ctstate: 'NEW,ESTABLISHED' }
+      - { chain: INPUT, protocol: tcp, ctstate: 'ESTABLISHED' }
+      - { chain: INPUT, protocol: udp, ctstate: 'ESTABLISHED' }
+      - { chain: INPUT, protocol: icmp, ctstate: 'ESTABLISHED' }
+  when:
+      - rule_3_4_4_2_3
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - rule_3.4.4.2.3
+      - iptables
+      - ip6tables
+
+- name: "3.4.4.2.4 | AUDIT | Ensure ip6tables firewall rules exist for all open ports"
+  block:
+      - name: "3.4.4.2.4 | AUDIT | Ensure ip6tables firewall rules exist for all open ports | Get list of open ports"
+        command: ss -6tuln
+        changed_when: false
+        failed_when: false
+        check_mode: false
+        register: 4_4_2_4_3_open_ports
+
+      - name: "3.4.4.2.4 | AUDIT | Ensure ip6tables firewall rules exist for all open ports | Get list of rules"
+        command: ip6tables -L INPUT -v -n
+        changed_when: false
+        failed_when: false
+        check_mode: false
+        register: 3_4_4_2_4_current_rules
+
+      - name: "3.4.4.2.4 | AUDIT | Ensure ip6tables firewall rules exist for all open ports | Alert about settings"
+        debug:
+            msg:
+                - "ALERT!!!!Below is the list the open ports and current rules"
+                - "Please create a rule for any open port that does not have a current rule"
+                - "Open Ports:"
+                - "{{ 3_4_4_2_4_open_ports.stdout_lines }}"
+                - "Current Rules:"
+                - "{{ 3_4_4_2_4_current_rules.stdout_lines }}"
+  when:
+      - rule_3_4_4_2_4
+  tags:
+      - level1-server
+      - level1-workstation
+      - audit
+      - rule_3.4.4.2.4
+      - iptables
+      - ip6tables

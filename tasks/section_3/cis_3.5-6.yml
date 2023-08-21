@@ -1,0 +1,44 @@
+---
+
+- name: "3.5| Ensure wireless interfaces are disabled"
+  block:
+      - name: "3.5 | PATCH | Ensure wireless interfaces are disabled | Check if wifi is enabled"
+        shell: nmcli radio wifi
+        register: rhel_wifi_enabled
+        check_mode: false
+        changed_when: rhel_wifi_enabled.stdout != "disabled"
+
+      - name: "3.5 | PATCH | Ensure wireless interfaces are disabled | Disable wifi if enabled"
+        command: nmcli radio wifi off
+        when: rhel_wifi_enabled is changed
+
+  when:
+      - rule_3_5
+      - "'NetworkManager' in ansible_facts.packages"
+  tags:
+      - level1-server
+      - level2-workstation
+      - rule_3.5
+
+- name: "3.6 | PATCH | Disable IPv6 | grub"
+  block:
+      - name: "3.6 | PATCH | Disable IPv6 | grub"
+        replace:
+            dest: /etc/default/grub
+            regexp: '(^GRUB_CMDLINE_LINUX\s*\=\s*)(?:")(.+)(?<!ipv6.disable=1)(?:")'
+            replace: '\1"\2 ipv6.disable=1"'
+        register: grub_ipv6
+        notify: grub2cfg
+
+      - name: "3.6 | FACT | Disable IPv6 | grub"
+        set_fact:
+            change_requires_reboot: true
+        when: grub_ipv6.changed
+  when:
+      - not ipv6_required
+      - rule_3_6
+  tags:
+      - level2-server
+      - level2-workstation
+      - rule_3.6
+      - patch
