@@ -17,8 +17,8 @@
 # fails they will be discarded.  Thus under some circumstances it is
 # better to use IP numbers than host names.
 
-{% for server in rhel7cis_time_synchronization_servers -%}
-server {{ server }} {{ rhel7cis_chrony_server_options }}
+{% for server in time_synchronization_servers -%}
+server {{ server }} {{ chrony_server_options }}
 {% endfor %}
 
 # Look here for the admin password needed for chronyc.  The initial
@@ -48,11 +48,11 @@ logdir /var/log/chrony
 
 maxupdateskew 100.0
 
-{% if rhel7cis_chrony_makestep is defined %}
+{% if chrony_makestep is defined %}
 # makestep added via automation
 # It overrides the skew to jump the clock time
 # BE WARNED: Certain software will be seriously affected by such jumps in the system time. (That is the reason why chronyd uses slewing normally.)
-makestep {{ rhel7cis_chrony_makestep }}
+makestep {{ chrony_makestep }}
 {% endif %}
 
 # Dump measurements when daemon exits.
