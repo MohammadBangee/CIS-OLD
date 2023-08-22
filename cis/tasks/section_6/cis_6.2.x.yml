@@ -95,7 +95,7 @@
         shell: grep '^+:' /etc/shadow
         changed_when: false
         failed_when: false
-        register: 6_2_4_audit
+        register: cis_6_2_4_audit
 
       - name: "6.2.4 | AUDIT | Ensure no legacy '+' entries exist in /etc/shadow | Alert when no entries found"
         debug:
@@ -124,7 +124,7 @@
         shell: grep '^+:' /etc/group
         changed_when: false
         failed_when: false
-        cis_6_2_4_audit
+        register: cis_6_2_4_audit
 
       - name: "6.2.4 | AUDIT | Ensure no legacy '+' entries exist in /etc/group | Alert when no entries found"
         debug:
@@ -132,13 +132,13 @@
         failed_when: false
         changed_when: false
         when:
-            - cis_cis_6_2_4_audit.stdout is not defined
+            - cis_6_2_4_audit.stdout is not defined
 
       - name: "6.2.4 | PATCH | Ensure no legacy '+' entries exist in /etc/group | Alert when entries found"
         debug:
             msg: "We have found legacy '+' entries in /etc/group; Please remove these entries manually"
         when:
-            - cis_cis_6_2_4_audit.stdout is defined
+            - cis_6_2_4_audit.stdout is defined
   when:
       - rule_6_2_4
   tags:
