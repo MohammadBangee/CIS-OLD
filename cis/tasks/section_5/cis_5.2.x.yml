@@ -116,7 +116,7 @@
             patterns: 'ssh_host_*_key'
             recurse: true
             file_type: any
-        register: rhel_5_3_4_pub_results
+        register: rhel_5_2_4_pub_results
 
       - name: "5.2.4 | AUDIT | Ensure permissions on SSH public host key files are configured"
         file:
