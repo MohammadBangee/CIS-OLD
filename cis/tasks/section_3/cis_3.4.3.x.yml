@@ -117,7 +117,7 @@
         changed_when: false
         failed_when: false
         register: 3_4_3_4_ip6saddr
-4 3 4  - name: "3.4.3.4 | PATCH | Ensure nftables loopback traffic is configured | Set iif lo accept rule"
+      - name: "3.4.3.4 | PATCH | Ensure nftables loopback traffic is configured | Set iif lo accept rule"
         command: nft add rule inet "{{ nft_tables_tableName }}" input iif lo accept
         when:
             - '"iif \"lo\" accept" not in 3_4_3_4_iiflo.stdout'
