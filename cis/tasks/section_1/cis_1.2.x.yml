@@ -78,8 +78,6 @@
         changed_when: false
         register: repolist
         check_mode: false
-        args:
-            warn: false
         tags:
             - skip_ansible_lint
 
