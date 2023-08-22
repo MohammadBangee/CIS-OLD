@@ -19,7 +19,7 @@ change_requires_reboot: false
 
 ## Python Binary
 ## This is used for python3 Installations where python2 OS modules are used in ansible
-python2_bin: /bin/python2.7
+python2_bin: /bin/python3
 
 
 ## Benchmark name used by audting control role
