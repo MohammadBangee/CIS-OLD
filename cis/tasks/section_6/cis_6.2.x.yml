@@ -508,7 +508,7 @@
   block:
       - name: "6.2.20 | AUDIT | Ensure all users' home directories exist | Find users missing home directories"
         shell: set -o pipefail ; pwck -r | grep -P {{ ld_regex | quote }}
-        changed_when: rhel_6_2_11_audit | length > 0
+        changed_when: rhel_6_2_20_audit | length > 0
         failed_when: users_missing_home.rc not in [0,1,2]
         check_mode: false
         register: users_missing_home
