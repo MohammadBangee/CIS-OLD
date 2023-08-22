@@ -1,6 +1,16 @@
 ---
 
-- name: "1.5.1 | PATCH | Ensure permissions on bootloader config are configured | UEFI"
+- name: "1.5.1 | PATCH | Ensure permissions on bootloader config are configured"
+  block:
+      - name: "1.5.1 | PATCH | Ensure permissions on bootloader config are configured | Update grub config settings"
+        file:
+            path: "{{ bootloader_path }}grub.cfg"
+            owner: root
+            group: root
+            mode: 0600
+        when:
+            - legacy_boot
+      - name: "1.5.1 | PATCH | Ensure permissions on bootloader config are configured | UEFI"
         mount:
             name: /boot/efi
             src: "UUID={{ item.uuid }}"
