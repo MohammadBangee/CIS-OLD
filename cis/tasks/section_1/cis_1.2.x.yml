@@ -6,7 +6,6 @@
       username: "{{ rh_sub_user }}"
       password: "{{ rh_sub_password }}"
       pool: "{{ rh_pool }}"
-  no_log: true
   when:
       - ansible_distribution == "RedHat"
       - rhnsd_required
