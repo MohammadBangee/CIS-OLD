@@ -5,7 +5,7 @@
       name: xinetd
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - ("'xinetd' in ansible_facts.packages") and not xinetd_required
       - rule_2_1_1

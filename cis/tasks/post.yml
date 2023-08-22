@@ -9,7 +9,7 @@
   tags:
       - skip_ansible_lint
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
 
 - name: POST | reboot system if changes require it and not skipped
   block:

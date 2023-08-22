@@ -13,7 +13,7 @@
       - patch
       - rule_2.2.1.1
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
 
 - name: "2.2.1.1 | PATCH | Ensure time synchronization is in use | service start"
   service:

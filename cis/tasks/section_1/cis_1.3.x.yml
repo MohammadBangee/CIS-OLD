@@ -14,7 +14,7 @@
       - patch
       - rule_1.3.1
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
 
 - name: "1.3.2 | AUDIT | Ensure sudo commands use pty"
   lineinfile:

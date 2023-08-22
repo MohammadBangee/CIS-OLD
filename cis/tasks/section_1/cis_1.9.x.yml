@@ -14,4 +14,4 @@
       - rule_1.9
       - skip_ansible_lint
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2

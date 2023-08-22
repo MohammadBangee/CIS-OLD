@@ -13,7 +13,7 @@
       - patch
       - rule_1.7.1.1
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
 
 - name: "1.7.1.2 | PATCH | Ensure SELinux is not disabled in bootloader configuration"
   block:
@@ -97,7 +97,7 @@
       - patch
       - rule_1.7.1.6
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
 
 - name: "1.7.1.7 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed"
   package:
@@ -111,4 +111,4 @@
       - patch
       - rule_1.7.1.7
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2

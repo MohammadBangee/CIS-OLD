@@ -5,7 +5,7 @@
       name: ypbind
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not ypbind_required
       - "'ypbind' in ansible_facts.packages"
@@ -22,7 +22,7 @@
       name: telnet
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - "'telnet' in ansible_facts.packages"
       - not telnet_required
@@ -39,7 +39,7 @@
       name: openldap-clients
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not openldap_clients_required
       - "'openldap-clients' in ansible_facts.packages"

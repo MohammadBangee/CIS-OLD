@@ -5,7 +5,7 @@
       name: ['audit', 'audit-libs']
       state: present
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - rule_4_1_1_1
   notify: restart auditd

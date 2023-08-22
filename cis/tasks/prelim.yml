@@ -61,18 +61,18 @@
   when:
       - not selinux_disable
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
 
 - name: "PRELIM | Section 4.1 | Configure System Accounting (auditd)"
   package:
       name: audit
       state: present
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
 
 - name: "PRELIM | Section 5.1 | Configure cron"
   package:
       name: cronie
       state: present
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2

@@ -5,7 +5,7 @@
       name: "{{ syslog }}"
       state: present
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - rule_4_2_1_1
   tags:

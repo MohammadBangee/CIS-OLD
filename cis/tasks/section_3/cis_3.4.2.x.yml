@@ -5,7 +5,7 @@
       name: firewalld
       state: present
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - "'firewalld' not in ansible_facts.packages"
       - rule_3_4_1_1
@@ -36,7 +36,7 @@
       enabled: false
       masked: true
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - "'iptables-services' in ansible_facts.packages"
       - rule_3_4_2_2
@@ -53,7 +53,7 @@
       enabled: false
       masked: true
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - "'nftables' in ansible_facts.packages"
       - rule_3_4_2_3

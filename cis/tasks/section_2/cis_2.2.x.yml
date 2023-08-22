@@ -7,7 +7,7 @@
           - "@X Window System"
           - "xorg-x11*"
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not xwindows_required
       - rule_2_2_2
@@ -25,7 +25,7 @@
             name: rsync
             state: absent
         vars:
-            ansible_python_interpreter: /bin/python
+            ansible_python_interpreter: /bin/python2
 
       - name: "2.2.3 | PATCH | Ensure rsync is not installed or the rsyncd services are masked | Mask "
         systemd:
@@ -66,7 +66,7 @@
       name: net-snmp
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not snmp_server
       - "'net-snmp' in ansible_facts.packages"
@@ -84,7 +84,7 @@
       name: squid
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not squid_server
       - "'squid' in ansible_facts.packages"
@@ -102,7 +102,7 @@
       name: samba
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not smb_server
       - "'samba' in ansible_facts.packages"
@@ -120,7 +120,7 @@
       name: dovecot
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not dovecot_server
       - "'dovecot' in ansible_facts.packages"
@@ -138,7 +138,7 @@
       name: httpd
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not httpd_server
       - "'httpd' in ansible_facts.packages"
@@ -156,7 +156,7 @@
       name: vsftpd
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not vsftpd_server
       - "'vsftpd' in ansible_facts.packages"
@@ -174,7 +174,7 @@
       name: bind
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not named_server
       - "'bind' in ansible_facts.packages"
@@ -194,7 +194,7 @@
             name: nfs-utils
             state: absent
         vars:
-            ansible_python_interpreter: /bin/python
+            ansible_python_interpreter: /bin/python2
         when:
             - not nfs_rpc_server and not nfs_server
 
@@ -222,7 +222,7 @@
             name: rpcbind
             state: absent
         vars:
-            ansible_python_interpreter: /bin/python
+            ansible_python_interpreter: /bin/python2
         when:
             - not nfs_rpc_server and not rpc_server
 
@@ -255,7 +255,7 @@
       name: openldap-servers
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not ldap_server
       - "'openldap-servers' in ansible_facts.packages"
@@ -273,7 +273,7 @@
       name: dhcp
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not dhcp_server
       - "'dhcp' in ansible_facts.packages"
@@ -292,7 +292,7 @@
       name: cups
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not cups_server
       - "'cups' in ansible_facts.packages"
@@ -310,7 +310,7 @@
       name: ypserv
       state: absent
   vars:
-      ansible_python_interpreter: /bin/python
+      ansible_python_interpreter: /bin/python2
   when:
       - not nis_server
       - "'ypserv' in ansible_facts.packages"
