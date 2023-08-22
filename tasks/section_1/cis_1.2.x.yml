@@ -5,7 +5,7 @@
       state: present
       username: "{{ rh_sub_user }}"
       password: "{{ rh_sub_password }}"
-      auto_attach: true
+      pool: "{{ rh_pool }}"
   no_log: true
   when:
       - ansible_distribution == "RedHat"
