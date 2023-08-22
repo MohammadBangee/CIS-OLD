@@ -44,7 +44,7 @@
             state: present
         register: python3reqs_installed
         loop:
-            - python36-rpm
+            - python3-rpm
             - libselinux-python3
 
       - name: Disable Epel repo if installed earlier
