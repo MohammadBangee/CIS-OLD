@@ -3,4 +3,4 @@
   become: true
 
   roles:
-  - role: "CIS"
+  - role: "cis"
