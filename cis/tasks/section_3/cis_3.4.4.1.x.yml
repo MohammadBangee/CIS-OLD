@@ -106,7 +106,7 @@
         changed_when: false
         failed_when: false
         check_mode: false
-        cis_: cis_3_4_4_1_4_open_ports
+        register: cis_3_4_4_1_4_open_ports
 
       - name: "3.4.4.1.4 | AUDIT | Ensure iptables firewall rules exist for all open ports | Get list of rules"
         command: iptables -L INPUT -v -n
