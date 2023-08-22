@@ -9,7 +9,7 @@
 
 - name: "SECTION | 1.3 | Filesystem Integrity"
   import_tasks: cis_1.3.x.yml
-  when: rhel7cis_config_aide
+  when: config_aide
 
 - name: "SECTION | 1.4 | Secure Boot Settings"
   import_tasks: cis_1.4.x.yml

@@ -290,7 +290,7 @@
       "1.1.19 | PATCH | Ensure nodev option set on removable media partitions"
       "1.1.20 | PATCH | Ensure nosuid option set on removable media partitions"
   mount:
-      name: /var/tmp
+      name: /mnt
       src: "{{ item.device }}"
       fstype: "{{ item.fstype }}"
       state: present
