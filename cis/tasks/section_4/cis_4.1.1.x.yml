@@ -81,7 +81,7 @@
             replace: 'audit_backlog_limit={{ audit_backlog_limit }}'
         register: grub_backup_updated
         notify: grub2cfg
-        when: '"audit_backlog_limit" in 4_1_1_4_grub_cmdline_linux_settings.stdout'
+        when: '"audit_backlog_limit" in cis_4_1_1_4_grub_cmdline_linux_settings.stdout'
 
       - name: "4.1.1.4 | PATCH | Ensure audit_backlog_limit is sufficient"
         set_fact:
