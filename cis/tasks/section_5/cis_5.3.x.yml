@@ -7,13 +7,13 @@
         failed_when: false
         changed_when: false
         check_mode: false
-        register: 5_3_1/2_profiles
+        register: cis_5_3_1/2_profiles
 
       - name: "5.3.1/5.3.2 | AUDIT | Ensure custom authselect profile is used | Show profiles"
         debug:
             msg:
                 - "Below are the current custom profiles"
-                - "{{ 5_3_1/2_profiles.stdout_lines }}"
+                - "{{ cis_5_3_1/2_profiles.stdout_lines }}"
 
       - name: "5.3.1/5.3.2 | PATCH | Ensure custom authselect profile is used | Create custom profiles"
         shell: authselect create-profile {{ authselect['custom_profile_name'] }} -b {{ authselect['default_file_to_copy'] }}
@@ -38,13 +38,13 @@
         failed_when: false
         changed_when: falses
         check_mode: false
-        register: 5_3_3_profiles_faillock
+        register: cis_5_3_3_profiles_faillock
 
       - name: "5.3.3 | AUDIT | Ensure authselect includes with-faillock| Show profiles"
         debug:
             msg:
                 - "Below are the current custom profiles"
-                - "{{ 5_3_3_profiles_faillock.stdout_lines }}"
+                - "{{ cis_5_3_3_profiles_faillock.stdout_lines }}"
 
       - name: "5.3.3 | PATCH | Ensure authselect includes with-faillock | Create custom profiles"
         shell: "authselect select custom/{{ authselect['custom_profile_name'] }} with-faillock"

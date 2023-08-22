@@ -6,7 +6,7 @@
         changed_when: false
         failed_when: false
         check_mode: false
-        register: 6_1_1_packages_rpm
+        register: cis_6_1_1_packages_rpm
         tags:
             - skip_ansible_lint
 
@@ -15,7 +15,7 @@
             - name: "6.1.1 | AUDIT | Audit system file permissions | Add file discrepancy list to system"
               copy:
                   dest: "{{ rpm_audit_file }}"
-                  content: "{{ 6_1_1_packages_rpm.stdout }}"
+                  content: "{{ cis_6_1_1_packages_rpm.stdout }}"
                   owner: root
                   group: root
                   mode: 0640
@@ -25,7 +25,7 @@
                   msg: |
                       "WARNING!! You have some package descrepancies issues.
                        The file list can be found in {{ rpm_audit_file }}"
-              when: 6_1_1_packages_rpm.stdout|length > 0
+              when: cis_6_1_1_packages_rpm.stdout|length > 0
 
             - name: "6.1.1 | AUDIT | Audit system file permissions | Message out no package descrepancies"
               debug:

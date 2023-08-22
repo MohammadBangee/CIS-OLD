@@ -91,13 +91,13 @@
         shell: "nmcli -t connection show | awk -F: '{ if($4){print $4} }' | while read INT; do firewall-cmd --get-active-zones | grep -B1 $INT; done"
         changed_when: false
         check_mode: false
-        register: 3_4_2_5_interfacepolicy
+        register: cis_3_4_2_5_interfacepolicy
 
       - name: "3.4.2.5 | AUDIT | Ensure network interfaces are assigned to appropriate zone | Get list of interfaces and policies | Show the interface to policy"
         debug:
             msg:
                 - "The items below are the policies tied to the interfaces, please correct as needed"
-                - "{{ 3_4_2_5_interfacepolicy.stdout_lines }}"
+                - "{{ cis_3_4_2_5_interfacepolicy.stdout_lines }}"
   when:
       - rule_3_4_2_5
   tags:
@@ -112,13 +112,13 @@
         shell: "firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do firewall-cmd --list-all --zone=$ZN; done"
         changed_when: false
         check_mode: false
-        register: 3_4_2_6_servicesport
+        register: cis_3_4_2_6_servicesport
 
       - name: "3.4.2.6 | AUDIT | Ensure firewalld drops unnecessary services and ports | Show services and ports"
         debug:
             msg:
                 - "The items below are the services and ports that are accepted, please correct as needed"
-                - "{{ 3_4_2_6_servicesport.stdout_lines }}"
+                - "{{ cis_3_4_2_6_servicesport.stdout_lines }}"
   when:
       - rule_3_4_2_6
   tags:

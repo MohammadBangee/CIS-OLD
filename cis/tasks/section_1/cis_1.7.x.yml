@@ -65,17 +65,17 @@
         failed_when: false
         changed_when: false
         check_mode: false
-        register: rhelcis_1_7_1_5_unconf_daemons
+        register: cis_1_7_1_5_unconf_daemons
 
       - name: "1.7.1.5 | AUDIT | Ensure no unconfined daemons exist | Message on no unconfined daemones"
         debug:
             msg: "Good News! There are no unconfined daemons found on your system"
-        when: rhelcis_1_7_1_5_unconf_daemons.stdout | length == 0
+        when: cis_1_7_1_5_unconf_daemons.stdout | length == 0
 
       - name: "1.7.1.5 | AUDIT | Ensure no unconfined daemons exist | Message on unconfined daemones"
         debug:
-            msg: "WARNING!! You have unconfined daemons: {{ rhelcis_1_6_1_5_unconf_daemons.stdout_lines }}"
-        when: rhelcis_1_7_1_5_unconf_daemons.stdout | length > 0
+            msg: "WARNING!! You have unconfined daemons: {{ cis_1_7_1_5_unconf_daemons.stdout_lines }}"
+        when: cis_1_7_1_5_unconf_daemons.stdout | length > 0
   when:
       - rule_1_7_1_5
   tags:

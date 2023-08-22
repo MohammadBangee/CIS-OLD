@@ -106,14 +106,14 @@
         changed_when: false
         failed_when: false
         check_mode: false
-        register: 3_4_4_1_4_open_ports
+        cis_: cis_3_4_4_1_4_open_ports
 
       - name: "3.4.4.1.4 | AUDIT | Ensure iptables firewall rules exist for all open ports | Get list of rules"
         command: iptables -L INPUT -v -n
         changed_when: false
         failed_when: false
         check_mode: false
-        register: 3_4_4_1_4_current_rules
+        register: cis_3_4_4_1_4_current_rules
 
       - name: "3.4.4.1.4 | AUDIT | Ensure iptables firewall rules exist for all open ports | Alert about settings"
         debug:
@@ -121,9 +121,9 @@
                 - "ALERT!!!!Below is the list the open ports and current rules"
                 - "Please create a rule for any open port that does not have a current rule"
                 - "Open Ports:"
-                - "{{ 3_4_4_1_4_open_ports.stdout_lines }}"
+                - "{{ cis_3_4_4_1_4_open_ports.stdout_lines }}"
                 - "Current Rules:"
-                - "{{ 3_4_4_1_4_current_rules.stdout_lines }}"
+                - "{{ cis_3_4_4_1_4_current_rules.stdout_lines }}"
   when:
       - rule_3_4_4_1_4
   tags:

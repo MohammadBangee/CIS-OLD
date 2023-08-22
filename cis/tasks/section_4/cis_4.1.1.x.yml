@@ -63,16 +63,16 @@
         changed_when: false
         failed_when: false
         check_mode: false
-        register: 4_1_1_4_grub_cmdline_linux_settings
+        register: cis_4_1_1_4_grub_cmdline_linux_settings
 
       - name: "4.1.1.4 | PATCH | Ensure audit_backlog_limit is sufficient | Set audit_backlog_limit if not configured"
         lineinfile:
             dest: /etc/default/grub
             regexp: '^GRUB_CMDLINE_LINUX='
-            line: 'GRUB_CMDLINE_LINUX="{{ 4_1_1_4_grub_cmdline_linux_settings.stdout }} audit_backlog_limit={{ audit_backlog_limit }}"'
+            line: 'GRUB_CMDLINE_LINUX="{{ cis_4_1_1_4_grub_cmdline_linux_settings.stdout }} audit_backlog_limit={{ audit_backlog_limit }}"'
         register: grub_backup_new
         notify: grub2cfg
-        when: '"audit_backlog_limit" not in 4_1_1_4_grub_cmdline_linux_settings.stdout'
+        when: '"audit_backlog_limit" not in cis_4_1_1_4_grub_cmdline_linux_settings.stdout'
 
       - name: "4.1.1.4 | PATCH | Ensure audit_backlog_limit is sufficient | Adjust audit_backlog_limit if exists"
         replace:

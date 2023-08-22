@@ -75,7 +75,7 @@
         shell: grep pam_tally2.so /etc/pam.d/system-auth /etc/pam.d/password-auth
         changed_when: false
         failed_when: false
-        register: 4_1_7_tally2_check
+        register: cis_4_1_7_tally2_check
         tags:
             - skip_ansible_lint
 
