@@ -19,7 +19,7 @@ change_requires_reboot: false
 
 ## Python Binary
 ## This is used for python3 Installations where python2 OS modules are used in ansible
-python2_bin: /bin/python3
+python2_bin: /bin/python2.7
 
 
 ## Benchmark name used by audting control role
@@ -363,7 +363,7 @@ varlog_location: "/var/log/sudo.log"
 xinetd_required: false
 
 # RedHat Satellite Subscription items
-rhnsd_required: false
+rhnsd_required: true
 
 # 1.4.2 Bootloader password
 set_boot_pass: false
