@@ -2,7 +2,7 @@
 # vars file for CIS
 
 min_ansible_version: 2.9
-rhel8cis_allowed_crypto_policies:
+allowed_crypto_policies:
     - 'DEFAULT'
     - 'FUTURE'
     - 'FIPS'
