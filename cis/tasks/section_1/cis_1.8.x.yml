@@ -96,8 +96,6 @@
       - patch
       - rule_1.8.1.6
 
----
-
 - name: 1.8.2 | PATCH | Ensure GDM login banner is configured
   block:
       - name: 1.8.2 | PATCH | Ensure GDM login banner is configured | gdm profile
