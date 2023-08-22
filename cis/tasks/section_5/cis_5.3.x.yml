@@ -7,19 +7,19 @@
         failed_when: false
         changed_when: false
         check_mode: false
-        register: cis_5_3_1/2_profiles
+        register: cis_5_3_1_profiles
 
       - name: "5.3.1/5.3.2 | AUDIT | Ensure custom authselect profile is used | Show profiles"
         debug:
             msg:
                 - "Below are the current custom profiles"
-                - "{{ cis_5_3_1/2_profiles.stdout_lines }}"
+                - "{{ cis_5_3_1_profiles.stdout_lines }}"
 
       - name: "5.3.1/5.3.2 | PATCH | Ensure custom authselect profile is used | Create custom profiles"
         shell: authselect create-profile {{ authselect['custom_profile_name'] }} -b {{ authselect['default_file_to_copy'] }}
         when: authselect_custom_profile_create
   when:
-      - rule_5_3_1/2
+      - rule_5_3_1
       - ansible_distribution_major_version == '8'
 
   tags:
