@@ -239,7 +239,7 @@
         register: priv_procs
         changed_when: false
         check_mode: false
-
+        failed_when: priv_procs.stdout == ""
       - name: "4.1.13 | PATCH | Ensure use of privileged commands is collected"
         template:
             src: audit/priv_commands.rules.j2
