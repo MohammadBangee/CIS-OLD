@@ -93,7 +93,7 @@
   command: /sbin/grub2-mkconfig -o "{{ bootloader_path }}grub.cfg"
 
 - name: restart rsyslog
-  service:s
+  service:
       name: rsyslog
       state: restarted
 
