@@ -1,6 +1,6 @@
 ---
 # notauto will auto install intrusive items
-notauto: false
+notauto: true
 
 # Disable/Enable whole sections (Default is for all)
 section1: true
@@ -15,7 +15,7 @@ os_check: true
 
 # Should always reboot after this number of changes allow this to be automated as part of remediation
 skip_reboot: true
-change_requires_reboot: false
+change_requires_reboot: true
 
 ## Python Binary
 ## This is used for python3 Installations where python2 OS modules are used in ansible
@@ -363,7 +363,7 @@ varlog_location: "/var/log/sudo.log"
 xinetd_required: false
 
 # RedHat Satellite Subscription items
-rhnsd_required: true
+rhnsd_required: false
 
 # 1.4.2 Bootloader password
 set_boot_pass: false
