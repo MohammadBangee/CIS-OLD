@@ -19,7 +19,7 @@
 
 - name: "SECTION | 1.6 | Mandatory Access Control"
   import_tasks: cis_1.6.x.yml
-  when: not rhel7cis_selinux_disable
+  when: not selinux_disable
 
 - name: "SECTION | 1.7 | Warning Banners"
   import_tasks: cis_1.7.x.yml
