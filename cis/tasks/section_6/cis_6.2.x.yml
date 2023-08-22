@@ -534,7 +534,7 @@
       ld_regex: >-
          ^user '(?P<user>.*)': directory '(?P<dir>.*)' does not exist$
       ld_users: "{{ users_missing_home.stdout_lines | map('regex_replace', ld_regex, '\\g<user>') | list }}"
-      rhel_6_2_11_audit: "{{ passwd | selectattr('uid', '>=', 1000) | selectattr('id', 'in', ld_users) | list }}"
+      rhel_6_2_20_audit: "{{ passwd | selectattr('uid', '>=', 1000) | selectattr('id', 'in', ld_users) | list }}"
   when:
       - rule_6_2_20
   tags:
