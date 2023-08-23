@@ -39,7 +39,7 @@ get_goss_file: download
 
 # how to get audit files onto host options
 # options are git/copy/get_url
-audit_content: git
+audit_content: get_url
 
 # Timeout for those cmds that take longer to run where timeout set
 audit_cmd_timeout: 30000
