@@ -284,8 +284,8 @@ rule_5_5_2: true
 rule_5_5_3: true
 rule_5_5_4: true
 rule_5_5_5: true
-rule_5_6: true
-rule_5_7: true
+rule_5_6: false
+rule_5_7: false
 
 
 # Section 6 rules
