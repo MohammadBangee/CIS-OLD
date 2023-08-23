@@ -33,7 +33,6 @@
             masked: true
   when:
       - not rsyncd_server
-      - not audit_content == 'git'  # Required by git for audit
       - "'rsync' in ansible_facts.packages"
       - rule_2_2_3
   tags:
