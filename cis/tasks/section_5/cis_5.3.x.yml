@@ -36,7 +36,7 @@
       - name: "5.3.3 | AUDIT | Ensure authselect includes with-faillock | Gather profiles and enabled features"
         shell: "authselect current | grep with-faillock"
         failed_when: false
-        changed_when: falses
+        changed_when: false
         check_mode: false
         register: cis_5_3_3_profiles_faillock
 
